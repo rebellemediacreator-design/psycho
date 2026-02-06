@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psycho Hebel – Brutal Utilitarian</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background-color: #090302;
+            color: #FFD6C9;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 16px;
+            padding-bottom: 80px;
+        }
+
+        .header {
+            background: #3A1E16;
+            border: 1px solid #751E0F;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 16px;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            color: #E8C4A2;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .header .streak {
+            font-size: 11px;
+            color: rgba(232, 196, 162, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #FF5C34;
+            color: #090302;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            color: #E8C4A2;
+            font-weight: 600;
+            margin: 24px 0 12px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card {
+            background: #3A1E16;
+            border: 1px solid #751E0F;
+            border-radius: 6px;
+            padding: 14px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            background: #751E0F;
+            transform: translateX(2px);
+        }
+
+        .card.active {
+            border-color: #FF5C34;
+            background: #3A1E16;
+        }
+
+        .card h3 {
+            font-size: 15px;
+            color: #E8C4A2;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .card p {
+            font-size: 13px;
+            color: #FFD6C9;
+            line-height: 1.4;
+        }
+
+        .card .status {
+            display: inline-block;
+            font-size: 11px;
+            color: rgba(232, 196, 162, 0.7);
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card .status.done {
+            color: #FF5C34;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: #FF5C34;
+            color: #090302;
+            border: none;
+            border-radius: 6px;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            width: 100%;
+            background: #3A1E16;
+            color: #FFD6C9;
+            border: 1px solid #751E0F;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:active {
+            background: #751E0F;
+        }
+
+        .timer-display {
+            background: #3A1E16;
+            border: 2px solid #FF5C34;
+            border-radius: 6px;
+            padding: 24px;
+            text-align: center;
+            margin: 16px 0;
+        }
+
+        .timer-display .time {
+            font-size: 48px;
+            color: #FF5C34;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .timer-display .label {
+            font-size: 12px;
+            color: rgba(232, 196, 162, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #3A1E16;
+            border: 1px solid #751E0F;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #FF5C34;
+            transition: width 0.3s ease;
+        }
+
+        .chip {
+            display: inline-block;
+            background: #3A1E16;
+            border: 1px solid #751E0F;
+            color: #FFD6C9;
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+
+        .chip.hot {
+            background: #FF5C34;
+            border-color: #FF5C34;
+            color: #090302;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #751E0F;
+            padding-bottom: 8px;
+        }
+
+        .tab {
+            flex: 1;
+            background: transparent;
+            color: rgba(232, 196, 162, 0.7);
+            border: none;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .tab.active {
+            background: #3A1E16;
+            color: #E8C4A2;
+            border: 1px solid #751E0F;
+        }
+
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            background: #3A1E16;
+            border: 1px solid #751E0F;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .checklist-item:hover {
+            background: #751E0F;
+        }
+
+        .checklist-item.checked {
+            border-color: #FF5C34;
+            opacity: 0.6;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            accent-color: #FF5C34;
+            cursor: pointer;
+        }
+
+        .checklist-item label {
+            flex: 1;
+            font-size: 14px;
+            color: #FFD6C9;
+            cursor: pointer;
+        }
+
+        .insight-box {
+            background: #751E0F;
+            border: 1px solid #FF5C34;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .insight-box .title {
+            font-size: 13px;
+            color: #FF5C34;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .insight-box p {
+            font-size: 14px;
+            color: #FFD6C9;
+            line-height: 1.5;
+        }
+
+        .psycho-trigger {
+            background: #090302;
+            border: 2px solid #FF5C34;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .psycho-trigger::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: #FF5C34;
+            animation: scan 3s infinite;
+        }
+
+        @keyframes scan {
+            0%, 100% { left: -100%; }
+            50% { left: 100%; }
+        }
+
+        .psycho-trigger .trigger-title {
+            font-size: 11px;
+            color: #FF5C34;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .psycho-trigger p {
+            font-size: 13px;
+            color: #FFD6C9;
+            line-height: 1.4;
+            margin-bottom: 0;
+        }
+
+        .reality-check {
+            background: linear-gradient(135deg, #3A1E16 0%, #751E0F 100%);
+            border: 1px solid #FF5C34;
+            border-radius: 6px;
+            padding: 14px;
+            margin: 12px 0;
+            font-size: 13px;
+            color: #E8C4A2;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .mental-hack {
+            display: flex;
+            align-items: center;
+            background: #3A1E16;
+            border-left: 3px solid #FF5C34;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 4px;
+        }
+
+        .mental-hack .icon {
+            font-size: 24px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .mental-hack .text {
+            font-size: 13px;
+            color: #FFD6C9;
+            line-height: 1.4;
+        }
+
+        .dopamine-meter {
+            background: #3A1E16;
+            border: 1px solid #751E0F;
+            border-radius: 6px;
+            padding: 14px;
+            margin: 16px 0;
+        }
+
+        .dopamine-meter .meter-label {
+            font-size: 11px;
+            color: rgba(232, 196, 162, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .dopamine-bar {
+            height: 12px;
+            background: #090302;
+            border: 1px solid #751E0F;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .dopamine-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FF5C34 0%, #E8C4A2 100%);
+            transition: width 0.5s ease;
+            box-shadow: 0 0 8px rgba(255, 92, 52, 0.4);
+        }
+
+        .trigger-warning {
+            background: #090302;
+            border: 1px solid #751E0F;
+            border-radius: 6px;
+            padding: 10px 12px;
+            margin: 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .trigger-warning .icon {
+            font-size: 16px;
+        }
+
+        .trigger-warning .text {
+            font-size: 12px;
+            color: rgba(232, 196, 162, 0.8);
+            line-height: 1.3;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 16px 0;
+        }
+
+        .stat {
+            background: #3A1E16;
+            border: 1px solid #751E0F;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .stat .value {
+            font-size: 24px;
+            color: #FF5C34;
+            font-weight: 700;
+        }
+
+        .stat .label {
+            font-size: 11px;
+            color: rgba(232, 196, 162, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(9, 3, 2, 0.95);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .modal-content {
+            max-width: 480px;
+            margin: 40px auto;
+            background: #3A1E16;
+            border: 1px solid #751E0F;
+            border-radius: 6px;
+            padding: 20px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .modal-header h2 {
+            font-size: 18px;
+            color: #E8C4A2;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #FFD6C9;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+        }
+
+        .detail-text {
+            font-size: 14px;
+            color: #FFD6C9;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .detail-text strong {
+            color: #E8C4A2;
+            font-weight: 600;
+        }
+
+        .action-prompt {
+            background: #090302;
+            border: 1px solid #FF5C34;
+            border-radius: 6px;
+            padding: 14px;
+            margin-top: 16px;
+        }
+
+        .action-prompt .prompt-title {
+            font-size: 12px;
+            color: #FF5C34;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .action-prompt p {
+            font-size: 13px;
+            color: #FFD6C9;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Psycho Hebel</h1>
+            <div class="streak">Tag <span id="streakDay">1</span> / 30 · Streak aktiv</div>
+            <div class="badge">Brutal Utilitarian</div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-view="home">Hebel</button>
+            <button class="tab" data-view="progress">Progress</button>
+            <button class="tab" data-view="tools">Tools</button>
+            <button class="tab" data-view="reset">Reset</button>
+        </div>
+
+        <!-- HOME VIEW -->
+        <div class="view active" id="home">
+            <div class="psycho-trigger">
+                <div class="trigger-title">⚡ Psycho-Trigger aktiv</div>
+                <p>Dein Gehirn hasst Anfänge. Nicht Aktivität. Die nächsten 5 Minuten entscheiden alles.</p>
+            </div>
+
+            <div class="insight-box">
+                <div class="title">🔥 Hebel des Tages</div>
+                <p>Gestalte deine Umgebung, nicht deinen Willen. Willenskraft ist begrenzt – Kontext ist mächtig.</p>
+            </div>
+
+            <div class="reality-check">
+                "Motivation kommt nach Handlung, nicht davor. Warten ist eine Strategie, die nicht funktioniert."
+            </div>
+
+            <div class="section-title">Die 10 Hebel</div>
+            
+            <div class="card" data-hebel="1">
+                <h3>1. Umgebung gestalten</h3>
+                <p>Kontext > Willenskraft. Sichtbar, erreichbar, sozial.</p>
+                <span class="status">Nicht gestartet</span>
+            </div>
+
+            <div class="card" data-hebel="2">
+                <h3>2. Gefühle benennen</h3>
+                <p>Affekt-Labeling beruhigt das Gehirn. Präzision = Macht.</p>
+                <span class="status">Nicht gestartet</span>
+            </div>
+
+            <div class="card" data-hebel="3">
+                <h3>3. Vorab entscheiden</h3>
+                <p>Wenn X, dann Y. Mentale Abkürzung statt Grübeln.</p>
+                <span class="status">Nicht gestartet</span>
+            </div>
+
+            <div class="card" data-hebel="4">
+                <h3>4. 5-Minuten-Regel</h3>
+                <p>Gehirn hasst Anfang, nicht Aktivität. Nur 5 Minuten.</p>
+                <span class="status">Nicht gestartet</span>
+            </div>
+
+            <div class="card" data-hebel="5">
+                <h3>5. Selbstinstruktion</h3>
+                <p>Kritik blockiert. Anleitung aktiviert. Nächster Schritt?</p>
+                <span class="status">Nicht gestartet</span>
+            </div>
+
+            <div class="card" data-hebel="6">
+                <h3>6. Fortschritt sichtbar</h3>
+                <p>Dopamin folgt Progress, nicht Perfektion. Mach's sichtbar.</p>
+                <span class="status">Nicht gestartet</span>
+            </div>
+
+            <div class="card" data-hebel="7">
+                <h3>7. Auswahl begrenzen</h3>
+                <p>Max 3 Optionen. Klarheit ist Design-Frage.</p>
+                <span class="status">Nicht gestartet</span>
+            </div>
+
+            <div class="card" data-hebel="8">
+                <h3>8. Identität steuert</h3>
+                <p>Handle wie die Person, nicht wie das Gefühl.</p>
+                <span class="status">Nicht gestartet</span>
+            </div>
+
+            <div class="card" data-hebel="9">
+                <h3>9. Körper-Reset</h3>
+                <p>Grübeln ist physisch. Kaltes Wasser, Bewegung, Haltung.</p>
+                <span class="status">Nicht gestartet</span>
+            </div>
+
+            <div class="card" data-hebel="10">
+                <h3>10. Selbstführung</h3>
+                <p>Ein Hebel, der heute zählt. Alles andere ist Lärm.</p>
+                <span class="status">Nicht gestartet</span>
+            </div>
+        </div>
+
+        <!-- PROGRESS VIEW -->
+        <div class="view" id="progress">
+            <div class="mental-hack">
+                <div class="icon">🧠</div>
+                <div class="text">Dein Gehirn belohnt Progress, nicht Perfektion. Jeder aktivierte Hebel = Dopamin-Hit.</div>
+            </div>
+
+            <div class="dopamine-meter">
+                <div class="meter-label">Dopamin-Level (Progress-Tracking)</div>
+                <div class="dopamine-bar">
+                    <div class="dopamine-fill" id="dopamineFill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <div class="value" id="completedCount">0</div>
+                    <div class="label">Aktiv</div>
+                </div>
+                <div class="stat">
+                    <div class="value" id="streakDisplay">1</div>
+                    <div class="label">Streak</div>
+                </div>
+                <div class="stat">
+                    <div class="value">10</div>
+                    <div class="label">Hebel</div>
+                </div>
+            </div>
+
+            <div class="section-title">Progress</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <p style="font-size: 12px; color: rgba(232, 196, 162, 0.7); margin-top: 8px;"><span id="progressPercent">0</span>% abgeschlossen</p>
+
+            <div class="trigger-warning">
+                <div class="icon">⚠️</div>
+                <div class="text">Fortschritt ist nicht linear. Rückschritte sind Datenpunkte, keine Misserfolge.</div>
+            </div>
+
+            <div class="section-title">Aktive Hebel</div>
+            <div id="activeHebel">
+                <p style="font-size: 14px; color: rgba(232, 196, 162, 0.7); padding: 20px; text-align: center;">Noch keine Hebel aktiviert. Starte mit dem ersten Schritt.</p>
+            </div>
+        </div>
+
+        <!-- TOOLS VIEW -->
+        <div class="view" id="tools">
+            <div class="psycho-trigger">
+                <div class="trigger-title">🎯 Cognitive Hack</div>
+                <p>Dein präfrontaler Cortex sabotiert Starts. Timer umgeht die Blockade. 5 Minuten = neurologischer Bypass.</p>
+            </div>
+
+            <div class="section-title">5-Minuten-Timer</div>
+            <div class="timer-display">
+                <div class="time" id="timerDisplay">5:00</div>
+                <div class="label">Nur anfangen. Rest kommt.</div>
+            </div>
+            <button class="btn-primary" id="startTimer">Timer starten</button>
+            <button class="btn-secondary" id="resetTimer" style="display: none;">Reset</button>
+
+            <div class="section-title">Daily Checklist</div>
+            <div class="checklist-item">
+                <input type="checkbox" id="check1">
+                <label for="check1">Umgebung angepasst?</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="check2">
+                <label for="check2">Gefühl benannt?</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="check3">
+                <label for="check3">Wenn-Dann-Regel gesetzt?</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="check4">
+                <label for="check4">5-Minuten-Hack genutzt?</label>
+            </div>
+            <div class="checklist-item">
+                <input type="checkbox" id="check5">
+                <label for="check5">Fortschritt dokumentiert?</label>
+            </div>
+
+            <div class="mental-hack" style="margin-top: 24px;">
+                <div class="icon">💊</div>
+                <div class="text">Affekt-Labeling senkt Amygdala-Aktivität um 30%. Benenne das Gefühl = neurologischer Reset.</div>
+            </div>
+
+            <div class="reality-check">
+                "Selbstkritik aktiviert Schmerzzentren. Selbstinstruktion aktiviert Handlungszentren. Gleicher Input, anderer neuronaler Pfad."
+            </div>
+
+            <div class="insight-box" style="margin-top: 16px;">
+                <div class="title">Reminder</div>
+                <p>Motivation entsteht nach Handlung, nicht davor. Fortschritt schlägt Talent.</p>
+            </div>
+        </div>
+
+        <!-- RESET VIEW -->
+        <div class="view" id="reset">
+            <div class="psycho-trigger">
+                <div class="trigger-title">🖤 7-Tage-Reset aktiv</div>
+                <p>Mentale Klarheit ist kein Zustand. Sie ist das Ergebnis radikaler Reduktion. 7 Tage ohne Noise.</p>
+            </div>
+
+            <div class="section-title">Der Reset-Plan</div>
+
+            <div class="card" data-reset="1">
+                <h3>Tag 1: Digital Detox</h3>
+                <p>Keine Social Media. Kein Doom-Scrolling. Nur gezielter Input.</p>
+                <span class="status">Nicht gestartet</span>
+            </div>
+
+            <div class="card" data-reset="2">
+                <h3>Tag 2: Entscheidungs-Vakuum</h3>
+                <p>Alle unwichtigen Entscheidungen vorher treffen. Keine mentale Energie verschwenden.</p>
+                <span class="status">Nicht gestartet</span>
+            </div>
+
+            <div class="card" data-reset="3">
+                <h3>Tag 3: Körper-Reset</h3>
+                <p>Kalte Dusche morgens. 20 Min Bewegung. Atmen. Der Körper führt den Geist.</p>
+                <span class="status">Nicht gestartet</span>
+            </div>
+
+            <div class="card" data-reset="4">
+                <h3>Tag 4: Radikale Priorisierung</h3>
+                <p>Nur die Top 3 Dinge heute. Alles andere ist Ablenkung.</p>
+                <span class="status">Nicht gestartet</span>
+            </div>
+
+            <div class="card" data-reset="5">
+                <h3>Tag 5: Affekt-Labeling Marathon</h3>
+                <p>Jedes Gefühl präzise benennen. Stündlich. Amygdala-Kontrolle trainieren.</p>
+                <span class="status">Nicht gestartet</span>
+            </div>
+
+            <div class="card" data-reset="6">
+                <h3>Tag 6: Umgebungs-Audit</h3>
+                <p>Alles entfernen, was dich nicht nach vorne bringt. Kontext ist Macht.</p>
+                <span class="status">Nicht gestartet</span>
+            </div>
+
+            <div class="card" data-reset="7">
+                <h3>Tag 7: Fortschritt dokumentieren</h3>
+                <p>Alles aufschreiben. Was hat sich verändert? Dopamin-Hit durch Sichtbarkeit.</p>
+                <span class="status">Nicht gestartet</span>
+            </div>
+
+            <div class="mental-hack" style="margin-top: 24px;">
+                <div class="icon">⚡</div>
+                <div class="text">7 Tage reichen, um neuronale Pfade umzulenken. Nicht zu verändern – umzulenken. Klarheit ist trainierbar.</div>
+            </div>
+
+            <div class="reality-check">
+                "Mentale Klarheit kommt nicht von mehr Information. Sie kommt von radikaler Reduktion des Noise."
+            </div>
+
+            <div class="dopamine-meter" style="margin-top: 16px;">
+                <div class="meter-label">Reset Progress (Tag <span id="resetProgress">0</span>/7)</div>
+                <div class="dopamine-bar">
+                    <div class="dopamine-fill" id="resetFill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="trigger-warning">
+                <div class="icon">⚠️</div>
+                <div class="text">Rückschritte sind Teil des Systems. Perfekte Streaks sind eine Illusion. Weitermachen ist der Reset.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal" id="hebelModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Hebel Details</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <div id="modalBody"></div>
+            <button class="btn-primary" id="activateHebel">Hebel aktivieren</button>
+        </div>
+    </div>
+
+    <script>
+        const hebelData = {
+            1: {
+                title: "1. Umgebung gestalten",
+                content: `<p class="detail-text">Willenskraft ist eine <strong>begrenzte Ressource</strong>. Kontext ist mächtig.</p>
+                <p class="detail-text">Wenn etwas sichtbar, leicht erreichbar und sozial akzeptiert ist, passiert es automatisch.</p>
+                <div class="action-prompt">
+                    <div class="prompt-title">Sofort umsetzen</div>
+                    <p>• Ungesundes Essen unsichtbar, gesundes sichtbar<br>
+                    • Handy nachts aus dem Schlafzimmer<br>
+                    • To-do-Liste offen auf dem Tisch, nicht im Kopf</p>
+                </div>
+                <p class="detail-text" style="margin-top: 16px;">👉 <strong>Veränderung beginnt außen, nicht innen.</strong></p>`
+            },
+            2: {
+                title: "2. Gefühle benennen",
+                content: `<p class="detail-text">Das Gehirn beruhigt sich, sobald du Gefühle <strong>korrekt benennst</strong> (Affekt-Labeling).</p>
+                <p class="detail-text">Nicht: "Mir geht's schlecht."<br>
+                Sondern: "Ich bin enttäuscht + überfordert + müde."</p>
+                <div class="action-prompt">
+                    <div class="prompt-title">Effekt</div>
+                    <p>Weniger Stress, mehr Kontrolle, klarere Entscheidungen.</p>
+                </div>
+                <p class="detail-text" style="margin-top: 16px;">👉 <strong>Präzision nimmt Gefühlen ihre Macht.</strong></p>`
+            },
+            3: {
+                title: "3. Vorab entscheiden",
+                content: `<p class="detail-text">Im Moment selbst sind wir <strong>schlecht</strong> darin. Vorab entscheiden = mentale Abkürzung.</p>
+                <div class="action-prompt">
+                    <div class="prompt-title">Anwendung</div>
+                    <p>• "Wenn X passiert, mache ich Y."<br>
+                    • Essens-, Arbeits-, Pausen-Regeln vorher festlegen<br>
+                    • Keine Diskussion im Moment</p>
+                </div>
+                <p class="detail-text" style="margin-top: 16px;">👉 <strong>Weniger Grübeln. Mehr Handlung.</strong></p>`
+            },
+            4: {
+                title: "4. 5-Minuten-Regel",
+                content: `<p class="detail-text">Das Gehirn hasst den <strong>Anfang</strong>, nicht die Aktivität.</p>
+                <div class="action-prompt">
+                    <div class="prompt-title">Der Hack</div>
+                    <p>"Ich mache es nur 5 Minuten."</p>
+                </div>
+                <p class="detail-text" style="margin-top: 16px;">In 80% der Fälle bleibst du dran.</p>
+                <p class="detail-text">👉 <strong>Starten schlägt Planen.</strong></p>`
+            },
+            5: {
+                title: "5. Selbstinstruktion statt Selbstkritik",
+                content: `<p class="detail-text">Selbstkritik <strong>blockiert</strong>. Anleitung <strong>aktiviert</strong>.</p>
+                <p class="detail-text">Nicht: "Ich bin unfähig."<br>
+                Sondern: "Was ist der nächste kleine Schritt?"</p>
+                <div class="action-prompt">
+                    <div class="prompt-title">Effekt</div>
+                    <p>Gleiche Situation, völlig anderer Output.</p>
+                </div>
+                <p class="detail-text" style="margin-top: 16px;">👉 <strong>Führung > Urteil.</strong></p>`
+            },
+            6: {
+                title: "6. Fortschritt sichtbar machen",
+                content: `<p class="detail-text">Dopamin folgt <strong>Fortschritt</strong>, nicht Perfektion.</p>
+                <p class="detail-text">Motivation entsteht <strong>nach</strong> Handlung, nicht davor.</p>
+                <div class="action-prompt">
+                    <div class="prompt-title">Mach sichtbar</div>
+                    <p>• Checklisten abhaken<br>
+                    • Serien tracken ("Tag 7 von 30")<br>
+                    • Vorher/Nachher dokumentieren</p>
+                </div>
+                <p class="detail-text" style="margin-top: 16px;">👉 <strong>Fortschritt schlägt Talent.</strong></p>`
+            },
+            7: {
+                title: "7. Auswahl radikal begrenzen",
+                content: `<p class="detail-text">Zu viele Optionen = <strong>Entscheidungsstarre</strong>.</p>
+                <div class="action-prompt">
+                    <div class="prompt-title">Anwendung</div>
+                    <p>• Max. 3 Optionen bei Entscheidungen<br>
+                    • Feste Routinen für Kleidung, Essen, Arbeit<br>
+                    • Standards statt täglicher Diskussionen</p>
+                </div>
+                <p class="detail-text" style="margin-top: 16px;">👉 <strong>Klarheit ist eine Design-Frage.</strong></p>`
+            },
+            8: {
+                title: "8. Identität steuert Verhalten",
+                content: `<p class="detail-text">Identität steuert Verhalten <strong>stärker</strong> als Motivation.</p>
+                <p class="detail-text">Nicht: "Ich habe keine Lust."<br>
+                Sondern: "Was würde eine fokussierte Person jetzt tun?"</p>
+                <div class="action-prompt">
+                    <div class="prompt-title">Hack</div>
+                    <p>Handle wie die Person, nicht wie das Gefühl.</p>
+                </div>
+                <p class="detail-text" style="margin-top: 16px;">👉 <strong>Verhalten formt Identität – rückwärts funktioniert es selten.</strong></p>`
+            },
+            9: {
+                title: "9. Körperlicher Reset",
+                content: `<p class="detail-text">Grübeln ist ein <strong>körperlicher</strong> Zustand.</p>
+                <div class="action-prompt">
+                    <div class="prompt-title">Sofort-Reset</div>
+                    <p>• Kaltes Wasser ins Gesicht<br>
+                    • 20 Sekunden Bewegung<br>
+                    • Aufrechte Haltung einnehmen<br>
+                    • Langsam ausatmen (4-7-8)</p>
+                </div>
+                <p class="detail-text" style="margin-top: 16px;">👉 <strong>Der Körper zieht den Geist mit.</strong></p>`
+            },
+            10: {
+                title: "10. Selbstführung > Selbstoptimierung",
+                content: `<p class="detail-text">Nicht alles verbessern. Nur das, was <strong>Wirkung</strong> hat.</p>
+                <div class="action-prompt">
+                    <div class="prompt-title">Die Frage</div>
+                    <p>"Was ist der eine Hebel, der heute den größten Unterschied macht?"</p>
+                </div>
+                <p class="detail-text" style="margin-top: 16px;">Alles andere ist Lärm.</p>
+                <p class="detail-text">👉 <strong>Weniger tun. Mehr wirken.</strong></p>`
+            }
+        };
+
+        let activeHebels = new Set();
+        let resetDays = new Set();
+        let streak = 1;
+        let timerInterval;
+        let timeLeft = 300;
+        let timerRunning = false;
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.view).classList.add('active');
+            });
+        });
+
+        // Hebel cards click
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', () => {
+                const hebelId = card.dataset.hebel;
+                const resetId = card.dataset.reset;
+                
+                if (hebelId) {
+                    showHebelModal(hebelId);
+                } else if (resetId) {
+                    activateResetDay(resetId);
+                }
+            });
+        });
+
+        function showHebelModal(hebelId) {
+            const data = hebelData[hebelId];
+            document.getElementById('modalTitle').textContent = data.title;
+            document.getElementById('modalBody').innerHTML = data.content;
+            document.getElementById('hebelModal').classList.add('active');
+            
+            const activateBtn = document.getElementById('activateHebel');
+            activateBtn.onclick = () => {
+                activateHebel(hebelId);
+                closeModal();
+            };
+        }
+
+        function closeModal() {
+            document.getElementById('hebelModal').classList.remove('active');
+        }
+
+        document.getElementById('closeModal').addEventListener('click', closeModal);
+
+        function activateHebel(hebelId) {
+            activeHebels.add(hebelId);
+            updateHebelStatus(hebelId);
+            updateProgress();
+        }
+
+        function updateHebelStatus(hebelId) {
+            const card = document.querySelector(`[data-hebel="${hebelId}"]`);
+            if (card) {
+                card.classList.add('active');
+                const status = card.querySelector('.status');
+                status.textContent = 'Aktiv';
+                status.classList.add('done');
+            }
+        }
+
+        function updateProgress() {
+            const count = activeHebels.size;
+            const percent = Math.round((count / 10) * 100);
+            
+            document.getElementById('completedCount').textContent = count;
+            document.getElementById('progressPercent').textContent = percent;
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('streakDisplay').textContent = streak;
+            
+            // Update dopamine meter
+            const dopaminePercent = Math.min(100, percent + (streak * 5));
+            document.getElementById('dopamineFill').style.width = dopaminePercent + '%';
+
+            updateActiveHebelList();
+        }
+
+        function updateActiveHebelList() {
+            const container = document.getElementById('activeHebel');
+            if (activeHebels.size === 0) {
+                container.innerHTML = '<p style="font-size: 14px; color: rgba(232, 196, 162, 0.7); padding: 20px; text-align: center;">Noch keine Hebel aktiviert. Starte mit dem ersten Schritt.</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            activeHebels.forEach(hebelId => {
+                const data = hebelData[hebelId];
+                const item = document.createElement('div');
+                item.className = 'card active';
+                item.innerHTML = `
+                    <h3>${data.title}</h3>
+                    <span class="status done">Aktiv seit heute</span>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // Timer functionality
+        document.getElementById('startTimer').addEventListener('click', () => {
+            if (!timerRunning) {
+                timerRunning = true;
+                document.getElementById('startTimer').textContent = 'Pause';
+                document.getElementById('resetTimer').style.display = 'block';
+                
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    updateTimerDisplay();
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        timerRunning = false;
+                        document.getElementById('startTimer').textContent = 'Nochmal';
+                        timeLeft = 300;
+                        updateTimerDisplay();
+                    }
+                }, 1000);
+            } else {
+                clearInterval(timerInterval);
+                timerRunning = false;
+                document.getElementById('startTimer').textContent = 'Weiter';
+            }
+        });
+
+        document.getElementById('resetTimer').addEventListener('click', () => {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            timeLeft = 300;
+            updateTimerDisplay();
+            document.getElementById('startTimer').textContent = 'Timer starten';
+            document.getElementById('resetTimer').style.display = 'none';
+        });
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Checklist functionality
+        document.querySelectorAll('.checklist-item input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                this.parentElement.classList.toggle('checked', this.checked);
+            });
+        });
+
+        // Reset day activation
+        function activateResetDay(resetId) {
+            resetDays.add(resetId);
+            updateResetStatus(resetId);
+            updateResetProgress();
+        }
+
+        function updateResetStatus(resetId) {
+            const card = document.querySelector(`[data-reset="${resetId}"]`);
+            if (card) {
+                card.classList.add('active');
+                const status = card.querySelector('.status');
+                status.textContent = 'Abgeschlossen';
+                status.classList.add('done');
+            }
+        }
+
+        function updateResetProgress() {
+            const count = resetDays.size;
+            const percent = Math.round((count / 7) * 100);
+            
+            document.getElementById('resetProgress').textContent = count;
+            document.getElementById('resetFill').style.width = percent + '%';
+        }
+
+        // Load saved data
+        function loadData() {
+            const saved = JSON.parse(localStorage.getItem('psychoHebel') || '{}');
+            if (saved.activeHebels) {
+                activeHebels = new Set(saved.activeHebels);
+                activeHebels.forEach(id => updateHebelStatus(id));
+                updateProgress();
+            }
+            if (saved.resetDays) {
+                resetDays = new Set(saved.resetDays);
+                resetDays.forEach(id => updateResetStatus(id));
+                updateResetProgress();
+            }
+            if (saved.streak) {
+                streak = saved.streak;
+                document.getElementById('streakDay').textContent = streak;
+            }
+        }
+
+        // Save data
+        function saveData() {
+            const data = {
+                activeHebels: Array.from(activeHebels),
+                resetDays: Array.from(resetDays),
+                streak: streak
+            };
+            localStorage.setItem('psychoHebel', JSON.stringify(data));
+        }
+
+        window.addEventListener('beforeunload', saveData);
+        loadData();
+    </script>
+</body>
+</html>
+
